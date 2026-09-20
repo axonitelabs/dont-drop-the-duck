@@ -14,26 +14,31 @@ let duckBalance = 0;
 let gameOver = false;
 
 document.addEventListener("keydown", (event) => {
-  if (event.key === "ArrowLeft" || event.key === "a") {
+  if (event.code === "KeyA" || event.code === "ArrowLeft") {
     movingLeft = true;
   }
 
-  if (event.key === "ArrowRight" || event.key === "d") {
+  if (event.code === "KeyD" || event.code === "ArrowRight") {
     movingRight = true;
   }
 
-  if ((event.key === " " || event.key === "ArrowUp") && !jumping) {
+  if (
+    (event.code === "Space" || event.code === "ArrowUp" || event.code === "KeyW") &&
+    !jumping
+  ) {
     velocityY = 15;
     jumping = true;
   }
+
+  event.preventDefault();
 });
 
 document.addEventListener("keyup", (event) => {
-  if (event.key === "ArrowLeft" || event.key === "a") {
+  if (event.code === "KeyA" || event.code === "ArrowLeft") {
     movingLeft = false;
   }
 
-  if (event.key === "ArrowRight" || event.key === "d") {
+  if (event.code === "KeyD" || event.code === "ArrowRight") {
     movingRight = false;
   }
 });
@@ -60,7 +65,10 @@ function updateGame() {
     jumping = false;
   }
 
-  if (x < 0) x = 0;
+  if (x < 0) {
+    x = 0;
+  }
+
   if (x > window.innerWidth - 60) {
     x = window.innerWidth - 60;
   }
