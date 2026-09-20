@@ -125,9 +125,7 @@ function makeSound(frequency, duration, type = "sine") {
 
     oscillator.stop(audioContext.currentTime + duration);
 
-  } catch (error) {
-    // sound failure should never stop the game
-  }
+  } catch (error) {}
 }
 
 function jumpSound() {
@@ -332,8 +330,6 @@ function createRoofLevel(options) {
 
 const levelDefinitions = [
 
-  // WORLD 1 - SCHOOL
-
   {
     name: "First Day",
     world: "School Rooftops",
@@ -388,8 +384,6 @@ const levelDefinitions = [
     movingEvery: 3
   },
 
-  // WORLD 2 - CITY
-
   {
     name: "Apartment Jump",
     world: "City Heights",
@@ -442,8 +436,6 @@ const levelDefinitions = [
     windGust: 0.08,
     movingEvery: 2
   },
-
-  // WORLD 3 - CONSTRUCTION
 
   {
     name: "Scaffolding",
@@ -503,8 +495,6 @@ const levelDefinitions = [
     wind: 0.1
   },
 
-  // WORLD 4 - SHOPPING DISTRICT
-
   {
     name: "Mall Roof",
     world: "Shopping District",
@@ -559,8 +549,6 @@ const levelDefinitions = [
     movingEvery: 2,
     windGust: 0.1
   },
-
-  // WORLD 5 - TRANSPORT
 
   {
     name: "Station Roof",
@@ -617,8 +605,6 @@ const levelDefinitions = [
     movingEvery: 2,
     windGust: 0.12
   },
-
-  // WORLD 6 - HARBOUR / NIGHT / FINAL
 
   {
     name: "Container Yard",
@@ -1558,7 +1544,7 @@ function showCheckpoint() {
 }
 
 // ======================================================
-// DUCK PHYSICS
+// DUCK PHYSICS - EASIER VERSION
 // ======================================================
 
 function updateDuck(delta) {
@@ -1579,44 +1565,48 @@ function updateDuck(delta) {
   windAmount.textContent =
     wind.toFixed(2);
 
+  // less movement wobble
   duckVelocity +=
     velocityX *
-    0.018 *
+    0.009 *
     delta;
 
+  // wind affects duck less
   duckVelocity +=
     wind *
     delta *
-    0.15;
+    0.075;
 
+  // stronger self-balancing
   duckVelocity -=
     duckBalance *
-    0.0018 *
+    0.0022 *
     delta;
 
-  duckVelocity *= 0.92;
+  // more damping
+  duckVelocity *= 0.86;
 
+  // slower tipping
   duckBalance +=
     duckVelocity *
     delta *
-    0.055;
+    0.04;
 
   if (onGround) {
-
-    duckBalance *= 0.985;
-
+    duckBalance *= 0.975;
   }
 
   duck.style.transform =
     `rotate(${duckBalance}deg)`;
 
+  // much more forgiving
   if (
     Math.abs(duckBalance) >
-    67
+    82
   ) {
 
     dropDuck(
-      "The duck achieved independent flight for approximately 0.2 seconds."
+      "Gerald has left the building."
     );
 
   }
