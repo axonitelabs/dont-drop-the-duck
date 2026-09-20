@@ -6,41 +6,121 @@
   <title>Don't Drop the Duck</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-  <div id="hud">
-    <div>LEVEL 1</div>
-    <button onclick="restartLevel()">Restart Level</button>
+<div id="gameShell">
+
+  <!-- TITLE SCREEN -->
+  <div id="titleScreen" class="menu-screen active">
+    <div class="title-card">
+      <div class="big-duck">
+        <div class="duck-body"></div>
+        <div class="duck-head">
+          <div class="duck-eye eye-left"></div>
+          <div class="duck-eye eye-right"></div>
+          <div class="duck-beak"></div>
+        </div>
+      </div>
+
+      <h1>DON'T DROP THE DUCK</h1>
+      <p>Carry the world's least cooperative duck.</p>
+
+      <button id="playButton">PLAY</button>
+      <button id="levelSelectButton">LEVEL SELECT</button>
+      <button id="loadButton">LOAD GAME</button>
+      <button id="resetSaveButton" class="danger">RESET TO START</button>
+
+      <p id="saveInfo"></p>
+    </div>
   </div>
 
-  <div id="game">
-    <div id="player">
-      <div id="duck">🦆</div>
-      <div id="body"></div>
+  <!-- LEVEL SELECT -->
+  <div id="levelSelectScreen" class="menu-screen">
+    <div class="level-menu">
+      <h2>LEVEL SELECT</h2>
+      <div id="levelButtons"></div>
+      <button id="backButton">BACK</button>
+    </div>
+  </div>
+
+  <!-- GAME -->
+  <div id="gameScreen">
+
+    <div id="backgroundBack"></div>
+    <div id="backgroundMid"></div>
+
+    <div id="hud">
+      <div>
+        <strong id="levelTitle">Level 1</strong>
+        <span id="worldTitle"></span>
+      </div>
+
+      <div class="hud-buttons">
+        <button id="saveButton">SAVE</button>
+        <button id="restartButton">RESTART</button>
+        <button id="menuButton">MENU</button>
+      </div>
     </div>
 
-    <div class="obstacle" id="box1"></div>
-    <div class="obstacle" id="box2"></div>
-    <div class="obstacle" id="box3"></div>
+    <div id="checkpointMessage">CHECKPOINT!</div>
 
-    <div id="finish">
-      🏁
+    <div id="viewport">
+      <div id="world">
+
+        <div id="player">
+          <div id="duck">
+            <div class="duck-body"></div>
+
+            <div class="duck-head">
+              <div class="duck-eye eye-left"></div>
+              <div class="duck-eye eye-right"></div>
+              <div class="duck-beak"></div>
+              <div class="duck-brow"></div>
+            </div>
+
+            <div class="duck-wing"></div>
+          </div>
+
+          <div id="person">
+            <div class="person-head"></div>
+            <div class="person-body"></div>
+            <div class="person-leg leg-left"></div>
+            <div class="person-leg leg-right"></div>
+          </div>
+        </div>
+
+        <div id="objects"></div>
+
+      </div>
     </div>
 
-    <div id="ground"></div>
+    <div id="windIndicator">
+      WIND <span id="windAmount">0</span>
+    </div>
+
   </div>
 
-  <div id="gameOver" class="screen">
-    <h1>YOU DROPPED THE DUCK 💀🦆</h1>
-    <button onclick="restartLevel()">TRY AGAIN</button>
+  <!-- GAME OVER -->
+  <div id="gameOverScreen" class="overlay">
+    <h1>YOU DROPPED THE DUCK 💀</h1>
+    <p id="deathMessage">The duck is disappointed.</p>
+    <button id="retryButton">TRY AGAIN</button>
+    <button id="deathMenuButton">MENU</button>
   </div>
 
-  <div id="levelComplete" class="screen">
-    <h1>LEVEL COMPLETE! 🦆🎉</h1>
-    <p>THE DUCK SURVIVED.</p>
-    <button onclick="nextLevel()">LEVEL 2</button>
+  <!-- LEVEL COMPLETE -->
+  <div id="completeScreen" class="overlay">
+    <h1>DUCK DELIVERED 🦆</h1>
+    <p id="completeText"></p>
+
+    <button id="nextButton">NEXT LEVEL</button>
+    <button id="completeSaveButton">SAVE PROGRESS</button>
+    <button id="completeMenuButton">MENU</button>
   </div>
 
-  <script src="script.js"></script>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
