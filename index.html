@@ -8,20 +8,37 @@
 </head>
 <body>
 
-  <div id="game">
-    <div id="message">DON'T DROP THE DUCK 🦆</div>
+  <div id="hud">
+    <div>LEVEL 1</div>
+    <button onclick="restartLevel()">Restart Level</button>
+  </div>
 
+  <div id="game">
     <div id="player">
       <div id="duck">🦆</div>
       <div id="body"></div>
     </div>
 
+    <div class="obstacle" id="box1"></div>
+    <div class="obstacle" id="box2"></div>
+    <div class="obstacle" id="box3"></div>
+
+    <div id="finish">
+      🏁
+    </div>
+
     <div id="ground"></div>
   </div>
 
-  <div id="gameOver">
-    <h1>YOU DROPPED THE DUCK 💀</h1>
-    <button onclick="restartGame()">TRY AGAIN</button>
+  <div id="gameOver" class="screen">
+    <h1>YOU DROPPED THE DUCK 💀🦆</h1>
+    <button onclick="restartLevel()">TRY AGAIN</button>
+  </div>
+
+  <div id="levelComplete" class="screen">
+    <h1>LEVEL COMPLETE! 🦆🎉</h1>
+    <p>THE DUCK SURVIVED.</p>
+    <button onclick="nextLevel()">LEVEL 2</button>
   </div>
 
   <script src="script.js"></script>
