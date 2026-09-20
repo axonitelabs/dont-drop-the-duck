@@ -5,6 +5,34 @@
 const STORM_WAIT_TIME = 180000; // 3 minutes
 const STORM_DURATION = 30000;   // 30 seconds
 
+function startStorm() {
+  stormActive = true;
+  stormTimer = 0;
+
+  document.body.classList.add("thunderstorm");
+
+  makeSound(80, 1.2, "sawtooth");
+}
+
+function stopStorm() {
+  stormActive = false;
+  stormTimer = 0;
+
+  document.body.classList.remove("thunderstorm");
+}
+
+function updateStorm(delta) {
+  stormTimer += delta;
+
+  if (!stormActive && stormTimer >= STORM_WAIT_TIME) {
+    startStorm();
+  }
+
+  if (stormActive && stormTimer >= STORM_DURATION) {
+    stopStorm();
+  }
+}
+
 let stormTimer = 0;
 let stormActive = false;
 
