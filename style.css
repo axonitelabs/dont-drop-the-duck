@@ -2,118 +2,713 @@
   box-sizing: border-box;
 }
 
+html,
 body {
   margin: 0;
-  overflow: hidden;
-  font-family: Arial, sans-serif;
-  background: #87ceeb;
-}
-
-#game {
-  width: 100vw;
-  height: 100vh;
-  position: relative;
-}
-
-#hud {
-  position: fixed;
-  top: 15px;
-  left: 15px;
-  z-index: 20;
-  font-size: 24px;
-  font-weight: bold;
-}
-
-#hud button {
-  margin-top: 8px;
-}
-
-#ground {
-  position: absolute;
-  bottom: 0;
   width: 100%;
-  height: 120px;
-  background: #57a639;
-}
-
-#player {
-  position: absolute;
-  left: 100px;
-  bottom: 120px;
-  width: 60px;
-  height: 100px;
-  z-index: 5;
-}
-
-#body {
-  width: 60px;
-  height: 80px;
-  background: #333;
-  border-radius: 15px;
-  position: absolute;
-  bottom: 0;
-}
-
-#duck {
-  position: absolute;
-  font-size: 50px;
-  top: -35px;
-  left: 5px;
-}
-
-.obstacle {
-  position: absolute;
-  bottom: 120px;
-  background: #8b5a2b;
-  border: 4px solid #5c3b1e;
-}
-
-#box1 {
-  left: 400px;
-  width: 70px;
-  height: 70px;
-}
-
-#box2 {
-  left: 700px;
-  width: 100px;
-  height: 100px;
-}
-
-#box3 {
-  left: 1050px;
-  width: 70px;
-  height: 150px;
-}
-
-#finish {
-  position: absolute;
-  left: 1350px;
-  bottom: 120px;
-  font-size: 80px;
-}
-
-.screen {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.9);
-  color: white;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  text-align: center;
-  z-index: 50;
-}
-
-.screen h1 {
-  font-size: 50px;
+  height: 100%;
+  overflow: hidden;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #10131a;
 }
 
 button {
-  font-size: 20px;
-  padding: 12px 22px;
+  font: inherit;
+  font-weight: bold;
   cursor: pointer;
-  border: none;
+  border: 0;
+  border-radius: 12px;
+  padding: 12px 18px;
+  transition: transform 0.15s, filter 0.15s;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+}
+
+#gameShell {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* ---------------- MENUS ---------------- */
+
+.menu-screen {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  background:
+    radial-gradient(circle at 50% 30%, #5ea8ff 0%, #24548b 45%, #101c31 100%);
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-screen.active {
+  display: flex;
+}
+
+.title-card,
+.level-menu {
+  width: min(700px, 92vw);
+  max-height: 90vh;
+  overflow: auto;
+  text-align: center;
+  padding: 35px;
+  border-radius: 24px;
+  color: white;
+  background: rgba(10, 20, 35, 0.86);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+}
+
+.title-card h1 {
+  font-size: clamp(38px, 7vw, 72px);
+  margin: 15px 0 5px;
+}
+
+.title-card p {
+  opacity: 0.8;
+}
+
+.title-card button {
+  display: block;
+  width: min(350px, 90%);
+  margin: 10px auto;
+  font-size: 18px;
+}
+
+#playButton {
+  background: #ffe45c;
+  color: #191919;
+}
+
+#levelSelectButton,
+#loadButton {
+  background: #ffffff;
+}
+
+.danger {
+  background: #d83c4e;
+  color: white;
+}
+
+#saveInfo {
+  min-height: 20px;
+}
+
+/* ---------------- LEVEL SELECT ---------------- */
+
+#levelButtons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(85px, 1fr));
+  gap: 10px;
+  margin: 25px 0;
+}
+
+.level-button {
+  min-height: 65px;
+  background: #edf3ff;
+}
+
+.level-button.locked {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.level-button.current {
+  outline: 4px solid #ffe45c;
+}
+
+/* ---------------- GAME ---------------- */
+
+#gameScreen {
+  display: none;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #6db7e8;
+}
+
+#gameScreen.active {
+  display: block;
+}
+
+#backgroundBack,
+#backgroundMid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+#backgroundBack {
+  background:
+    linear-gradient(#69bced, #bce7ff 65%, #e9f7ff);
+}
+
+#backgroundMid {
+  opacity: 0.8;
+}
+
+.theme-school #backgroundMid {
+  background:
+    linear-gradient(transparent 60%, rgba(50, 80, 110, 0.22) 60%);
+}
+
+.theme-city #backgroundBack {
+  background: linear-gradient(#3a5988, #80aee0 55%, #e7cda8);
+}
+
+.theme-city #backgroundMid {
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 70px,
+      rgba(27,38,57,0.3) 70px 130px
+    );
+  clip-path: polygon(
+    0 70%, 8% 45%, 15% 65%, 23% 35%, 32% 65%,
+    42% 40%, 50% 70%, 60% 28%, 70% 60%, 80% 35%,
+    90% 60%, 100% 42%, 100% 100%, 0 100%
+  );
+}
+
+.theme-construction #backgroundBack {
+  background: linear-gradient(#f4a35d, #ffd9a8 70%, #f2e1ca);
+}
+
+.theme-mall #backgroundBack {
+  background: linear-gradient(#74cad4, #c8f4f4);
+}
+
+.theme-transport #backgroundBack {
+  background: linear-gradient(#728da1, #d4e2e9);
+}
+
+.theme-harbour #backgroundBack {
+  background: linear-gradient(#537d9a, #abcfe1 70%, #376d82);
+}
+
+.theme-night #backgroundBack {
+  background: linear-gradient(#080f28, #1e3364 65%, #65476f);
+}
+
+.theme-storm #backgroundBack {
+  background: linear-gradient(#1e2533, #495466 55%, #272c35);
+}
+
+.theme-final #backgroundBack {
+  background: linear-gradient(#120f20, #422f64 60%, #d05e5e);
+}
+
+#hud {
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  right: 16px;
+  z-index: 50;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 10px 14px;
+
+  color: white;
+  background: rgba(10, 15, 25, 0.72);
+  backdrop-filter: blur(8px);
+
+  border-radius: 15px;
+}
+
+#levelTitle {
+  font-size: 20px;
+}
+
+#worldTitle {
+  margin-left: 10px;
+  opacity: 0.7;
+}
+
+.hud-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.hud-buttons button {
+  padding: 8px 12px;
+}
+
+#viewport {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+#world {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 100%;
+  transform: translateX(0);
+  will-change: transform;
+}
+
+/* ---------------- PLATFORM STYLES ---------------- */
+
+.platform {
+  position: absolute;
+  border-radius: 5px 5px 0 0;
+  background:
+    linear-gradient(#606b75 0 12px, #303840 12px 100%);
+  border-top: 3px solid #9ba5ae;
+
+  box-shadow:
+    inset 0 -8px 20px rgba(0,0,0,0.28),
+    0 10px 20px rgba(0,0,0,0.25);
+}
+
+.platform.school {
+  background:
+    linear-gradient(#d6d6d6 0 10px, #7e8790 10px 100%);
+}
+
+.platform.construction {
+  background:
+    linear-gradient(#ffc13b 0 12px, #75552e 12px 100%);
+}
+
+.platform.mall {
+  background:
+    linear-gradient(#e7eeee 0 12px, #61818c 12px 100%);
+}
+
+.platform.train {
+  background:
+    linear-gradient(#dadde1 0 12px, #334a59 12px 100%);
+}
+
+.platform.harbour {
+  background:
+    linear-gradient(#c7a35f 0 12px, #66512b 12px 100%);
+}
+
+.platform.final {
+  background:
+    linear-gradient(#be5067 0 12px, #423041 12px 100%);
+}
+
+.moving-platform {
+  outline: 2px solid rgba(255,255,255,0.55);
+}
+
+.checkpoint {
+  position: absolute;
+  width: 25px;
+  height: 100px;
+}
+
+.checkpoint::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  bottom: 0;
+  width: 8px;
+  height: 100%;
   border-radius: 10px;
+  background: white;
+}
+
+.checkpoint::after {
+  content: "🦆";
+  position: absolute;
+  left: 10px;
+  top: 0;
+  font-size: 34px;
+}
+
+.finish-door {
+  position: absolute;
+  width: 90px;
+  height: 150px;
+  border-radius: 12px 12px 0 0;
+
+  background:
+    linear-gradient(90deg, #5c3723, #96633f);
+
+  border: 7px solid #342115;
+
+  box-shadow:
+    0 0 0 5px rgba(255,255,255,0.15),
+    0 15px 30px rgba(0,0,0,0.35);
+}
+
+.finish-door::before {
+  content: "EXIT";
+  position: absolute;
+  top: -38px;
+  left: 13px;
+
+  color: white;
+  font-weight: bold;
+
+  background: #2d9c56;
+  padding: 6px 10px;
+  border-radius: 5px;
+}
+
+.finish-door::after {
+  content: "";
+  position: absolute;
+  right: 10px;
+  top: 70px;
+
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+
+  background: #e8c358;
+}
+
+/* ---------------- HAZARDS ---------------- */
+
+.hazard {
+  position: absolute;
+  z-index: 4;
+}
+
+.crate {
+  width: 65px;
+  height: 65px;
+
+  background:
+    linear-gradient(45deg, transparent 43%, #66431f 43% 57%, transparent 57%),
+    linear-gradient(-45deg, transparent 43%, #66431f 43% 57%, transparent 57%),
+    #a56c35;
+
+  border: 5px solid #694622;
+}
+
+.vent {
+  width: 80px;
+  height: 50px;
+  border-radius: 5px;
+
+  background:
+    repeating-linear-gradient(
+      0deg,
+      #434b51 0 5px,
+      #7f8b91 5px 10px
+    );
+
+  border: 4px solid #353b40;
+}
+
+.spikes {
+  width: 80px;
+  height: 35px;
+
+  background:
+    linear-gradient(135deg, transparent 50%, #d9e1e5 50%) 0 0/20px 35px repeat-x;
+}
+
+.falling-object {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+
+  background: #a86b35;
+  border: 4px solid #694119;
+
+  z-index: 20;
+}
+
+/* ---------------- PLAYER ---------------- */
+
+#player {
+  position: absolute;
+  width: 50px;
+  height: 105px;
+  z-index: 20;
+
+  transform-origin: bottom center;
+}
+
+#person {
+  position: absolute;
+  left: 7px;
+  bottom: 0;
+  width: 38px;
+  height: 75px;
+}
+
+.person-head {
+  position: absolute;
+  top: 0;
+  left: 8px;
+
+  width: 24px;
+  height: 24px;
+
+  background: #efb58e;
+  border-radius: 50%;
+  border: 2px solid rgba(0,0,0,0.35);
+}
+
+.person-body {
+  position: absolute;
+  top: 22px;
+  left: 3px;
+
+  width: 34px;
+  height: 39px;
+
+  border-radius: 9px 9px 4px 4px;
+
+  background:
+    linear-gradient(90deg, #205c8f, #347eb9);
+}
+
+.person-leg {
+  position: absolute;
+  bottom: 0;
+
+  width: 10px;
+  height: 23px;
+
+  background: #292d37;
+  border-radius: 4px;
+}
+
+.leg-left {
+  left: 6px;
+}
+
+.leg-right {
+  right: 6px;
+}
+
+/* ---------------- DUCK ---------------- */
+
+#duck {
+  position: absolute;
+  left: -3px;
+  top: -20px;
+
+  width: 62px;
+  height: 55px;
+
+  transform-origin: 50% 80%;
+
+  z-index: 30;
+}
+
+.duck-body,
+.big-duck .duck-body {
+  position: absolute;
+
+  width: 47px;
+  height: 32px;
+
+  left: 4px;
+  bottom: 0;
+
+  background: #ffe55e;
+  border-radius: 60% 50% 55% 55%;
+  border: 3px solid #cda82b;
+
+  box-shadow: inset -7px -5px rgba(222,174,26,0.2);
+}
+
+.duck-head,
+.big-duck .duck-head {
+  position: absolute;
+
+  width: 37px;
+  height: 36px;
+
+  right: 0;
+  top: 0;
+
+  background: #ffea63;
+
+  border-radius: 50%;
+  border: 3px solid #cda82b;
+}
+
+.duck-eye {
+  position: absolute;
+
+  width: 8px;
+  height: 10px;
+
+  background: #111;
+  border-radius: 50%;
+
+  top: 9px;
+}
+
+.eye-left {
+  left: 9px;
+}
+
+.eye-right {
+  right: 7px;
+}
+
+.duck-beak {
+  position: absolute;
+
+  right: -14px;
+  top: 19px;
+
+  width: 20px;
+  height: 11px;
+
+  background: #ec8c27;
+  border-radius: 60% 80% 70% 60%;
+
+  border: 2px solid #aa5f18;
+}
+
+.duck-wing {
+  position: absolute;
+
+  left: 11px;
+  bottom: 8px;
+
+  width: 26px;
+  height: 15px;
+
+  border-radius: 50%;
+
+  background: #e6bd32;
+
+  transform: rotate(-15deg);
+}
+
+.duck-brow {
+  position: absolute;
+
+  width: 12px;
+  height: 3px;
+
+  right: 4px;
+  top: 5px;
+
+  background: #8b721c;
+
+  transform: rotate(-18deg);
+  border-radius: 4px;
+}
+
+/* giant menu duck */
+
+.big-duck {
+  position: relative;
+
+  width: 160px;
+  height: 120px;
+
+  margin: 0 auto;
+  transform: scale(1.8);
+  transform-origin: center bottom;
+}
+
+/* ---------------- UI ---------------- */
+
+#windIndicator {
+  position: absolute;
+
+  left: 20px;
+  bottom: 20px;
+
+  z-index: 50;
+
+  color: white;
+  padding: 8px 12px;
+
+  border-radius: 10px;
+
+  background: rgba(0,0,0,0.45);
+}
+
+#checkpointMessage {
+  position: absolute;
+
+  top: 100px;
+  left: 50%;
+
+  transform: translateX(-50%) translateY(-30px);
+
+  opacity: 0;
+
+  color: white;
+  font-size: 30px;
+  font-weight: bold;
+
+  z-index: 80;
+
+  transition: 0.3s;
+}
+
+#checkpointMessage.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ---------------- OVERLAYS ---------------- */
+
+.overlay {
+  display: none;
+
+  position: absolute;
+  inset: 0;
+
+  z-index: 200;
+
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  text-align: center;
+
+  color: white;
+
+  background: rgba(5, 8, 15, 0.92);
+}
+
+.overlay.active {
+  display: flex;
+}
+
+.overlay h1 {
+  font-size: clamp(36px, 6vw, 70px);
+  margin-bottom: 8px;
+}
+
+.overlay button {
+  width: min(320px, 80%);
+  margin: 7px;
+}
+
+/* ---------------- RESPONSIVE ---------------- */
+
+@media (max-width: 650px) {
+  #hud {
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  #worldTitle {
+    display: block;
+    margin-left: 0;
+  }
+
+  .hud-buttons button {
+    padding: 7px 8px;
+    font-size: 12px;
+  }
 }
