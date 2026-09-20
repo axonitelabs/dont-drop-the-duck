@@ -1600,10 +1600,10 @@ function updateDuck(delta) {
     `rotate(${duckBalance}deg)`;
 
   // much more forgiving
-  if (
-    Math.abs(duckBalance) >
-    82
-  ) {
+if (
+  Math.abs(duckBalance) >
+  76
+) {
 
     dropDuck(
       "Gerald has left the building."
