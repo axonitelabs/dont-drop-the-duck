@@ -2,6 +2,11 @@
 // DON'T DROP THE DUCK
 // 30 LEVEL GAME ENGINE
 // ======================================================
+const STORM_WAIT_TIME = 180000; // 3 minutes
+const STORM_DURATION = 30000;   // 30 seconds
+
+let stormTimer = 0;
+let stormActive = false;
 
 const viewport = document.getElementById("viewport");
 const world = document.getElementById("world");
