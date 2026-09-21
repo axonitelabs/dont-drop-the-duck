@@ -61,7 +61,7 @@ const JUMP_POWER = 15.5;
 // STORM SETTINGS
 // ======================================================
 
-const STORM_WAIT_TIME = 180000; // 3 minutes
+const STORM_WAIT_TIME = 1000; // 3 minutes
 const STORM_DURATION = 30000;   // 30 seconds
 
 let stormTimer = 0;
